@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0">
+<channel>
+<title>kusaba x - b</title>
+<link>http://localhost:8085/kuzaba/b</link>
+<description>Live RSS feed for http://localhost:8085/kuzaba/b</description>
+<language>en</language>';
+	<item>
+	<title>1</title>
+	<link>
+			http://localhost:8085/kuzaba/b/res/1.html</link>
+	
+	<description><![CDATA[
+						<a href="http://localhost:8085/kuzaba/b/src/12800994167.jpg"><img src="http://localhost:8085/kuzaba/b/thumb/12800994167s.jpg" /></a><br /><br />
+		
+	
+			dsadasdas<br /><br />
+	
+	]]></description>
+	</item>
+
+</channel>
+</rss>

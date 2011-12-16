@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0">
+<channel>
+<title>kusaba x - Modlog</title>
+<link>http://localhost:8085/kuzaba</link>
+<description>Live view of all moderative actions on http://localhost:8085/kuzaba</description>
+<language>en</language>
+	<item>
+	<title>Mon 07/26 04:06</title>
+	<description><![CDATA[admin - Closed ban request 1 with ban.]]></description>
+	</item>
+	<item>
+	<title>Mon 07/26 04:06</title>
+	<description><![CDATA[admin - Closed ban request 1 without ban.]]></description>
+	</item>
+	<item>
+	<title>Mon 07/26 03:20</title>
+	<description><![CDATA[admin - Logged in]]></description>
+	</item>
+	<item>
+	<title>Sun 07/25 16:10</title>
+	<description><![CDATA[admin - Updated board configuration - /b/]]></description>
+	</item>
+	<item>
+	<title>Sun 07/25 16:09</title>
+	<description><![CDATA[admin - Updated board configuration - /b/]]></description>
+	</item>
+	<item>
+	<title>Sun 07/25 16:09</title>
+	<description><![CDATA[admin - Added board: /b/]]></description>
+	</item>
+	<item>
+	<title>Sun 07/25 15:48</title>
+	<description><![CDATA[admin - Logged in]]></description>
+	</item>
+
+</channel>
+</rss>
