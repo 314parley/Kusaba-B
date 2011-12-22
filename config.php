@@ -57,18 +57,18 @@ if ($cf['KU_APC']) {
 
 if (!$cache_loaded) {
 	// Database
-		$cf['KU_DBTYPE']          = 'sqlite';	// Database type. Valid values are mysql and mysqli (reccomended for mysql). 
+		$cf['KU_DBTYPE']          = 'mysql';	// Database type. Valid values are mysql and mysqli (reccomended for mysql). 
 							// PostgreSQL is also supported. Supported values are postgres64, postgres7 and postgres8. Only postgres8 is tested.
 							// SQLite is also supported. Set to sqlite to use. SQLite will not use any database software, only a single file.
 		$cf['KU_DBHOST']          = 'localhost'; // Database hostname. On SQLite this has no effect.
-		$cf['KU_DBDATABASE']      = '/var/www/html/sqlite3-cAb31y.db'; // Database... database. On SQLite this will be the path to your database file. Secure this file.
-		$cf['KU_DBUSERNAME']      = 'root'; // Database username. On SQLite this has no effect.
-		$cf['KU_DBPASSWORD']      = ''; // Database password. On SQLite this has no effect.
+		$cf['KU_DBDATABASE']      = 'CHANGEME'; // Database... database. On SQLite this will be the path to your database file. Secure this file.
+		$cf['KU_DBUSERNAME']      = 'CHANGEME'; // Database username. On SQLite this has no effect.
+		$cf['KU_DBPASSWORD']      = 'CHANGEME'; // Database password. On SQLite this has no effect.
 		$cf['KU_DBPREFIX']        = ''; // Database table prefix
 		$cf['KU_DBUSEPERSISTENT'] = false; // Use persistent connection to database
 
 	// Imageboard info
-		$cf['KU_NAME']      = 'kusaba x'; // The name of your site
+		$cf['KU_NAME']      = 'Kusaba B'; // The name of your site
 		$cf['KU_SLOGAN']    = '<em>"slogan!"</em>'; // Site slogan, set to nothing to disable its display
 		$cf['KU_HEADERURL'] = ''; // Full URL to the header image (or rotation script) to be displayed, can be left blank for no image
 		$cf['KU_IRC']       = ''; // IRC info, which will be displayed in the menu.  Leave blank to remove it
@@ -77,9 +77,9 @@ if (!$cache_loaded) {
 	// Paths and URLs
 		// Main installation directory
 			$cf['KU_ROOTDIR']   = realpath(dirname(__FILE__))."/"; // Full system path of the folder containing kusaba.php, with trailing slash. The default value set here should be OK.. If you need to change it, you should already know what the full path is anyway.
-			$cf['KU_WEBFOLDER'] = '/kuzaba/'; // The path from the domain of the board to the folder which kusaba is in, including the trailing slash.  Example: "http://www.yoursite.com/misc/kusaba/" would have a $cf['KU_WEBFOLDER'] of "/misc/kusaba/"
-			$cf['KU_WEBPATH']   = 'http://localhost:8085/kuzaba'; // The path to the index folder of kusaba, without trailing slash. Example: http://www.yoursite.com
-			$cf['KU_DOMAIN']    = ''; // Used in cookies for the domain parameter.  Should be a period and then the top level domain, which will allow the cookies to be set for all subdomains.  For http://www.randomchan.org, the domain would be .randomchan.org; http://zachchan.freehost.com would be zach.freehost.com
+			$cf['KU_WEBFOLDER'] = 'CHANGEME'; // The path from the domain of the board to the folder which kusaba is in, including the trailing slash.  Example: "http://www.yoursite.com/misc/kusaba/" would have a $cf['KU_WEBFOLDER'] of "/misc/kusaba/"
+			$cf['KU_WEBPATH']   = 'CHANGEME'; // The path to the index folder of kusaba, without trailing slash. Example: http://www.yoursite.com
+			$cf['KU_DOMAIN']    = 'CHANGEME'; // Used in cookies for the domain parameter.  Should be a period and then the top level domain, which will allow the cookies to be set for all subdomains.  For http://www.randomchan.org, the domain would be .randomchan.org; http://zachchan.freehost.com would be zach.freehost.com
 
 		// Board subdomain/alternate directory (optional, change to enable)
 			// DO NOT CHANGE THESE IF YOU DO NOT KNOW WHAT YOU ARE DOING!!
@@ -189,7 +189,7 @@ if (!$cache_loaded) {
 		$cf['KU_DEBUG'] = false; // When enabled, debug information will be printed (Warning: all queries will be shown publicly)
 
 	// Post-configuration actions, don't modify these
-		$cf['KU_VERSION']    = '0.9';
+		$cf['KU_VERSION']    = '0.1alpha';
 		$cf['KU_TAGS']       = serialize($cf['KU_TAGS']);
 		$cf['KU_TRIPS']      = serialize($cf['KU_TRIPS']);
 		$cf['KU_LINELENGTH'] = $cf['KU_LINELENGTH'] * 15;

@@ -1,16 +1,24 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<title>{t}YOU ARE BANNED{/t}!</title>
-<link rel="stylesheet" type="text/css" href="{%KU_BOARDSPATH}/css/site_futaba.css" title="Futaba">
+<title>{%KU_NAME} - Banned</title>
+<!--<link rel="stylesheet" type="text/css" href="{%KU_BOARDSPATH}/css/site_futaba.css" title="Futaba">-->
+<link rel="stylesheet" type="text/css" href="/css/index.css" title="Index" />
 <link rel="shortcut icon" href="{%KU_WEBPATH}/favicon.ico">
 </head>
 <body>
-<h1>{%KU_NAME}</h1>
-<h3>{%KU_SLOGAN}</h3>
+<div id="doc">
+<center><h1>{%KU_NAME}</h1></center>
+<center><h3>{%KU_SLOGAN}</h3></center>
+<div id="bd">
 <div style="margin: 3em;">
-	<h2>&nbsp;{t}YOU ARE BANNED{/t}! :\</h2>
-	<img src="{%KU_BOARDSPATH}/youarebanned.jpg" style="float: right;" alt=":'(">
+<div class="box-outer top-box" >
+<div class="box-inner">
+<div class="boxbar">
+	<h2>&nbsp;{t}YOU ARE BANNED{/t}! ;_;</h2>
+	</div>
+	<div class="boxcontent">
+	<img src="{%KU_BOARDSPATH}/youarebanned.jpg" style="float: right;" width="199"alt="Banned" >
 	{foreach name=bans item=ban from=$bans}
 		{if not $.foreach.bans.first}
 			{t}Additionally{/t},
@@ -66,6 +74,8 @@
 		{/if}
 
 	{/foreach}
+	</div>
 </div>
 </body>
 </html>
+<!--I know this is ugly, but hell, it works...-->

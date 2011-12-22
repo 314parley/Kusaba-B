@@ -36,8 +36,8 @@
 	{else}
 		<h2 style="display: inline;"><br />
 	{/if}
-	&nbsp;IRC</h2>
+<!--	&nbsp;IRC</h2>
 	<ul>
 		<li>{%KU_IRC}</li>
-	</ul>
+	</ul>-->
 {/if}
