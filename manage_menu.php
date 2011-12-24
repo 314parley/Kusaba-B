@@ -58,13 +58,14 @@ if (!$manage_class->ValidateSession(true)) {
 	$tpl_links .= "</strong>";
 	$tpl_links .= '<li><a href="' . KU_WEBFOLDER . '" target="_top">' . _gettext('Home') . '</a></li>' . "\n";
 	$tpl_links .= '<li><a href="manage_page.php?action=logout">'._gettext('Log out').'</a></li>
-	<li><span id="postingpassword"><a id="showpwd" href="#" onclick="javascript:document.getElementById(\'postingpassword\').innerHTML = \'<input type=text id=postingpasswordbox value=' . $manage_postpassword . '>\'; document.getElementById(\'postingpasswordbox\').select(); return false;">'._gettext('Show Posting Password').'</a></span></li></ul>';
+	<li><span id="postingpassword"><a id="showpwd" href="#" onclick="javascript:document.getElementById(\'postingpassword\').innerHTML = \'<input type=text id=postingpasswordbox value=' . $manage_postpassword . '>\'; document.getElementById(\'postingpasswordbox\').select(); return false;">'._gettext('Show Posting Password').'</a></span></li><li><a href="manage_page.php?action=staffconnect">'._gettext('Staff Connect').'</a></li></ul>';
 	// Home
 	$tpl_links .= section_html(_gettext('Home'), 'home') .
 	'<ul>
 	<li><a href="manage_page.php?">'._gettext('View Announcements').'</a></li>
 	<li><a href="manage_page.php?action=posting_rates">'._gettext('Posting rates (past hour)').'</a></li>
 	<li><a href="manage_page.php?action=statistics">' . _gettext('Statistics') . '</a></li>';
+	
 	if ($manage_class->CurrentUserIsAdministrator() || $manage_class->CurrentUserIsModerator()) {
 		$tpl_links .= '<li><a href="manage_page.php?action=changepwd">' . _gettext('Change account password') . '</a></li>';
 	}
@@ -119,7 +120,7 @@ if (!$manage_class->ValidateSession(true)) {
 	// Ban requests
 	$tpl_links .= section_html(_gettext('Ban Requests'), 'banreqs') .
 	'<ul>';
-	$tc_db->debug = true;
+	$tc_db->debug = false;
 	$res = $tc_db->Execute('SELECT * FROM ban_requests');
 	$tc_db->debug = false;
 	if ($manage_class->CurrentUserIsAdministrator() || $manage_class->CurrentUserIsModerator()) {

@@ -40,7 +40,7 @@ function CreateSalt() {
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="pl" lang="pl">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Kusaba X Installation</title>
+<title>Kusaba B Installation</title>
 <style type="text/css">
 body { font-family: sans-serif; font-size: 75%; background: #ffe }
 a { text-decoration: none; color: #550 }
@@ -59,12 +59,12 @@ li a { display: block; width: 100%; }
 </head>
 
 <body>
-<div style="text-align:center;"><h1>Kusaba X Installation</h1></div>
+<div style="text-align:center;"><h1>Kusaba B Installation</h1></div>
 
 <?php
 echo '<h2>Checking configuration file...</h2>';
-if (file_exists('config.php')) {
-	require 'config.php';
+if (file_exists('../config.php')) {
+	require '../config.php';
 	require KU_ROOTDIR . 'inc/functions.php';
 	if (KU_RANDOMSEED!="ENTER RANDOM LETTERS/NUMBERS HERE"&&KU_RANDOMSEED!="") {
 		echo 'Configuration appears correct.';

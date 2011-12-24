@@ -1,34 +1,36 @@
 {if empty($boards)}
-	<tr>
-		<td>{t}No visible boards{/t}</td>
-	</tr>
+	<ul>
+		<li>{t}No Boards Available...{/t}</li>
+	</ul>
 {else}
-	<tr>
+	<ul>
 	{foreach name=sections item=sect from=$boards}
-		<td>
-			<table style="padding:2px; border:0;">
-				<tr><td><strong style="color:#850000;">{$sect.name}</strong></td></tr>
+	
+		<li>
+			<table border=1px>
+			<!--This function works the Section name...-->
+			<div class="column">
+				<h3>{$sect.name}</h3>
+				<!--Section end-->
 		{if count($sect.boards) > 0}
 			{foreach name=brds item=brd from=$sect.boards}
-				<tr><td><a href="{%KU_BOARDSPATH}/{$brd.name}/" class="boardlink{if $brd.trial eq 1} trial{/if}{if $brd.popular eq 1} pop{/if}">
-				{if $showdirs eq 1}
-					/{$brd.name}/ - 
-				{/if}
-				{$brd.desc}
+<ul>
+				<li><a href="{%KU_BOARDSPATH}/{$brd.name}/" class="boardlink">{$brd.desc}
 				{if $brd.locked eq 1}
-					<img src="{%KU_BOARDSPATH}/css/locked.gif" border="0" alt="{t}Locked{/t}">
+				<img src="{%KU_BOARDSPATH}/css/locked.gif" border="0" alt="{t}Locked{/t}">
 				{/if}
-				</a></td></tr>
+				</a></li></ul>
 			{/foreach}
+			
 		{else}
-				<tr>
-					<td>{t}No visible boards{/t}</td>
-				</tr>
+				<ul>
+					<li>{t}No visible boards{/t}</li>
+				</ul>
 		{/if}
 			</table>
-		</td>
+		</li>
 	{/foreach}
-	</tr>
+	</ul>
 {/if}
 {if %KU_IRC}
 	{if %KU_MENUTYPE eq 'normal'}

@@ -265,139 +265,7 @@ class Manage {
 			return false;
 		}
 	}
-	function staffconnect() {
-                global $tc_db, $dwoo, $tpl_page, $action;
-                $this->ModeratorsOnly();
-                $tpl_page .= '<h2>' . _gettext('Staff Connect') . '</h2><br>';
-                if($_GET['add']) {
-                        $this->AdministratorsOnly();
-                        $tpl_page .= '<form action="?action=staffconnect" method="post">';
-                        $tpl_page .= '<b>Add item</b><br/>
-                        This message will be displayed to all staff members. Format your staffconnect with HTML code.<br/>
-                        <br/>
-                        <label for="subject">Subject:</label><input type="text" name="subject" length="50"/><br/><label for="news_item">News:</label><textarea name="news_item" rows="15" cols="50"></textarea><input type="submit" value="Add News"/></form><br/>';
-                }
-                if($_GET['delete']) {
-                        $this->AdministratorsOnly();
-                        if($_GET['delete'] != '') {
-                                if($tc_db->Execute("DELETE FROM `" . KU_DBPREFIX . "staffconnect` WHERE `id` = '" . mysql_real_escape_string($_GET['delete']) . "'")) {
-                                        $tpl_page .= 'News post deleted<br/><br/>';
-                                        management_addlogentry(_gettext('Deleted an staffconnect entry'), 9);
-                                }
-                        }
-                }
-                if(isset($_POST['news_item'])) {
-                        $this->AdministratorsOnly();
-                        if($_POST['news_item'] == '' || $_POST['subject'] == '') {
-                                exitWithErrorPage(_gettext('Please fill in all fields.'));
-                        }
-
-                        if($tc_db->Execute("INSERT HIGH_PRIORITY INTO `" . KU_DBPREFIX . "staffconnect` ( `name`, `subject` , `news` , `postedat` , `postedby`) VALUES ( '" . mysql_real_escape_string($_SESSION['manageusername']) . "' , '" . mysql_real_escape_string($_POST['subject']) . "' , '" . mysql_real_escape_string($_POST['news_item']) . "' , '" . time() . "' , '" . mysql_real_escape_string($_SESSION['manageusername']) . "')")) {               
-                                management_addlogentry(_gettext('Added an staff connect entry'), 9);
-                                $tpl_page .= (_gettext('News item successfully added.')) . '<br/><br/>';
-                        }
-                        else {
-                                exitWithErrorPage(_gettext('Item was not added ' . mysql_error()));
-                        }                      
-                }
-                if($_GET['commentdelete']) {
-                        $this->AdministratorsOnly();
-                        $_GET['commentdelete'] = urldecode($_GET['commentdelete']);
-                        if(!is_numeric($_GET['id'])) {
-                                exitWithErrorPage(_gettext('Invalid ID'));
-                        }
-                        else {
-                                $results = $tc_db->GetAll ("SELECT HIGH_PRIORITY * FROM `" . KU_DBPREFIX . "staffconnect` WHERE `id` = '". mysql_real_escape_string($_GET['id'])."'");
-                                if (count($results) > 0) {
-                                        foreach ($results as $line) {
-                                                $line['comments'] = str_replace($_GET['commentdelete'], "", $line['comments']);
-                                        }
-                                        if($tc_db->Execute("UPDATE `" . KU_DBPREFIX . "staffconnect` SET `comments` = '".mysql_real_escape_string($line['comments'])."' WHERE `id` = '". mysql_real_escape_string($_GET['id'])."'")) {
-                                                $tpl_page .= 'Comment deleted';
-                                        }
-                                        else {
-                                                $tpl_page .= 'Failed to delete: ' . mysql_error();
-                                        }
-                                }
-                                else {
-                                        $tpl_page .= 'Invalid ID';
-                                }
-                        }
-                }
-                if($_GET['comment']) {
-                        if(isset($_POST['addcomment'])) {
-                                $_POST['addcomment'] = str_replace("|", "-", $_POST['addcomment']);
-                                $_POST['addcomment'] = str_replace(":", ";", $_POST['addcomment']);
-                                if($tc_db->Execute("UPDATE `" . KU_DBPREFIX . "staffconnect` SET `comments` = CONCAT( `comments`, '". mysql_real_escape_string($_POST['addcomment']) . '|' . $_POST['commentid'] . '|' . $_SESSION['manageusername'] . '|' . time() . ':' . "') WHERE `id` = '". $_POST['commentid']."'")) {
-                                        $tpl_page .= 'Comment added!<br/><br/>';
-                                        management_addlogentry(_gettext('Added an staffconnect comment'), 9);
-                                }
-                                else {
-                                        die(mysql_error());
-                                }
-                        }
-                        $results = $tc_db->GetAll("SELECT HIGH_PRIORITY * FROM `" . KU_DBPREFIX . "staffconnect` WHERE `id` = '". mysql_real_escape_string($_GET['comment'])."' ORDER BY `id` DESC");
-                        if (count($results) > 0) {
-                                foreach ($results as $line) {
-                                        $tpl_page .= '<div style="border: 1px solid #888"><div style="padding: 5px;background:#E0E0E0;"><b>'.$line['subject'].'</b> | '.date('F j, Y, g:i a', $line['postedat']).'';
-                                        $tpl_page .= ' by '.$line['name'].' ';
-                                        if($line['name'] == $_SESSION['manageusername']){
-                                            $tpl_page .= '[<a href="manage_page.php?action=staffconnect&delete='.$line['id'].'">x</a>]</div>';
-                                        }
-                                        $tpl_page .= '<div style="padding: 5px;">'.$line['news'].'</div></div><br/>';
-                                        if($line['comments'] == '') {
-                                                $tpl_page .= 'No comments<br/>';
-                                        }
-                                        else {
-                                                $comment = explode(":", $line['comments']);
-                                                foreach($comment as $comment2) {
-                                                        if($comment2 != '') {
-                                                                $comment3 = explode("|", $comment2);
-                                                                $tpl_page .= '<div style="border: 1px solid #999;"><div style="background-color: #F0F0F0; padding: 4px;"><strong>'.$comment3[2] . '</strong> ('.date('F j, Y, g:i a', $comment3[3]).') [<a href="manage_page.php?action=staffconnect&commentdelete='.urlencode($comment2).'&id='.$line['id'].'">x</a>]</div><div style="padding: 4px;">' . htmlspecialchars($comment3[0]).'</div></div><br/>';
-                                                        }
-                                                }
-                                        }
-                                        $tpl_page .= '<br/><form action="?action=staffconnect&comment='.$line['id'].'" method="post"><input type="hidden" value="'.$_GET['comment'].'" name="commentid"/><textarea name="addcomment" rows="4" cols="50"></textarea><input type="submit" name="submitcomment" value="Add"/></form><br/>';
-                                }
-                        }
-                        else {
-                                $tpl_page .= 'Invalid comment ID';
-                        }
-                }
-                if(!($_GET['add']) && !($_GET['comment']) && !($_GET['commentdelete'])) {                      
-                $results = $tc_db->GetAll("SELECT HIGH_PRIORITY * FROM `" . KU_DBPREFIX . "staffconnect` ORDER BY `id` DESC");
-                        if ($results !== false && count($results) > 0) {
-                                foreach ($results as $line) {
-                                        $tpl_page .= '<div style="border: 1px solid #888"><div style="padding: 5px;background:#E0E0E0;"><b>'.$line['subject'].'</b> | '.date('F j, Y, g:i a', $line['postedat']).'';
-                                        $tpl_page .= ' by '.$line['name'].' ';
-                                        if($line['name'] == $_SESSION['manageusername']){
-                                            $tpl_page .= '[<a href="manage_page.php?action=staffconnect&delete='.$line['id'].'">x</a>]</div>';
-                                        }
-                                        $tpl_page .= '<div style="padding: 5px;">'.$line['news'].'</div></div>';
-                                        $comment = explode(":", $line['comments']);
-                                        $i = 0;
-                                        foreach($comment as $comment2) {
-                                                if($comment2 != '') {
-                                                        $i++;
-                                                }
-                                        }
-                                        if($i == 0) {
-                                                $tpl_page .=  '<div align="right" style="padding: 3px"><a href="manage_page.php?action=staffconnect&comment='.$line['id'].'" style="color: grey">No comments</a></div><br/><br/>';
-                                        }
-                                    else {
-                                                $tpl_page .=  '<div align="right" style="padding: 3px"><a href="manage_page.php?action=staffconnect&comment='.$line['id'].'">Comments ('.$i.')</a></div><br/><br/>';
-                                        }                              
-                                }
-                        } else {
-                                $tpl_page .= 'No news feed.';
-                        }
-                        if($this->CurrentUserIsAdministrator()) {
-                                $tpl_page .= '<p style="text-align: right">[<a href="manage_page.php?action=staffconnect&add=1">Add item</a>]</p>';
-                        }
-                }
-        }
-
-
+	
 		/*
 	* +------------------------------------------------------------------------------+
 	* Ban Requests
@@ -4348,4 +4216,136 @@ class Manage {
 		die();
 	}
 }
+function staffconnect() {
+                global $tc_db, $dwoo, $tpl_page, $action;
+                $this->ModeratorsOnly();
+                $tpl_page .= '<h2>' . _gettext('Staff Connect') . '</h2><br>';
+                if($_GET['add']) {
+                        $this->AdministratorsOnly();
+                        $tpl_page .= '<form action="?action=staffconnect" method="post">';
+                        $tpl_page .= '<b>Add item</b><br/>
+                        This message will be displayed to all staff members. Format your staffconnect with HTML code.<br/>
+                        <br/>
+                        <label for="subject">Subject:</label><input type="text" name="subject" length="50"/><br/><label for="news_item">News:</label><textarea name="news_item" rows="15" cols="50"></textarea><input type="submit" value="Add News"/></form><br/>';
+                }
+                if($_GET['delete']) {
+                        $this->AdministratorsOnly();
+                        if($_GET['delete'] != '') {
+                                if($tc_db->Execute("DELETE FROM `" . KU_DBPREFIX . "staffconnect` WHERE `id` = '" . mysql_real_escape_string($_GET['delete']) . "'")) {
+                                        $tpl_page .= 'News post deleted<br/><br/>';
+                                        management_addlogentry(_gettext('Deleted an staffconnect entry'), 9);
+                                }
+                        }
+                }
+                if(isset($_POST['news_item'])) {
+                        $this->AdministratorsOnly();
+                        if($_POST['news_item'] == '' || $_POST['subject'] == '') {
+                                exitWithErrorPage(_gettext('Please fill in all fields.'));
+                        }
+
+                        if($tc_db->Execute("INSERT HIGH_PRIORITY INTO `" . KU_DBPREFIX . "staffconnect` ( `name`, `subject` , `news` , `postedat` , `postedby`) VALUES ( '" . mysql_real_escape_string($_SESSION['manageusername']) . "' , '" . mysql_real_escape_string($_POST['subject']) . "' , '" . mysql_real_escape_string($_POST['news_item']) . "' , '" . time() . "' , '" . mysql_real_escape_string($_SESSION['manageusername']) . "')")) {               
+                                management_addlogentry(_gettext('Added an staff connect entry'), 9);
+                                $tpl_page .= (_gettext('News item successfully added.')) . '<br/><br/>';
+                        }
+                        else {
+                                exitWithErrorPage(_gettext('Item was not added ' . mysql_error()));
+                        }                      
+                }
+                if($_GET['commentdelete']) {
+                        $this->AdministratorsOnly();
+                        $_GET['commentdelete'] = urldecode($_GET['commentdelete']);
+                        if(!is_numeric($_GET['id'])) {
+                                exitWithErrorPage(_gettext('Invalid ID'));
+                        }
+                        else {
+                                $results = $tc_db->GetAll ("SELECT HIGH_PRIORITY * FROM `" . KU_DBPREFIX . "staffconnect` WHERE `id` = '". mysql_real_escape_string($_GET['id'])."'");
+                                if (count($results) > 0) {
+                                        foreach ($results as $line) {
+                                                $line['comments'] = str_replace($_GET['commentdelete'], "", $line['comments']);
+                                        }
+                                        if($tc_db->Execute("UPDATE `" . KU_DBPREFIX . "staffconnect` SET `comments` = '".mysql_real_escape_string($line['comments'])."' WHERE `id` = '". mysql_real_escape_string($_GET['id'])."'")) {
+                                                $tpl_page .= 'Comment deleted';
+                                        }
+                                        else {
+                                                $tpl_page .= 'Failed to delete: ' . mysql_error();
+                                        }
+                                }
+                                else {
+                                        $tpl_page .= 'Invalid ID';
+                                }
+                        }
+                }
+                if($_GET['comment']) {
+                        if(isset($_POST['addcomment'])) {
+                                $_POST['addcomment'] = str_replace("|", "-", $_POST['addcomment']);
+                                $_POST['addcomment'] = str_replace(":", ";", $_POST['addcomment']);
+                                if($tc_db->Execute("UPDATE `" . KU_DBPREFIX . "staffconnect` SET `comments` = CONCAT( `comments`, '". mysql_real_escape_string($_POST['addcomment']) . '|' . $_POST['commentid'] . '|' . $_SESSION['manageusername'] . '|' . time() . ':' . "') WHERE `id` = '". $_POST['commentid']."'")) {
+                                        $tpl_page .= 'Comment added!<br/><br/>';
+                                        management_addlogentry(_gettext('Added an staffconnect comment'), 9);
+                                }
+                                else {
+                                        die(mysql_error());
+                                }
+                        }
+                        $results = $tc_db->GetAll("SELECT HIGH_PRIORITY * FROM `" . KU_DBPREFIX . "staffconnect` WHERE `id` = '". mysql_real_escape_string($_GET['comment'])."' ORDER BY `id` DESC");
+                        if (count($results) > 0) {
+                                foreach ($results as $line) {
+                                        $tpl_page .= '<div style="border: 1px solid #888"><div style="padding: 5px;background:#E0E0E0;"><b>'.$line['subject'].'</b> | '.date('F j, Y, g:i a', $line['postedat']).'';
+                                        $tpl_page .= ' by '.$line['name'].' ';
+                                        if($line['name'] == $_SESSION['manageusername']){
+                                            $tpl_page .= '[<a href="manage_page.php?action=staffconnect&delete='.$line['id'].'">x</a>]</div>';
+                                        }
+                                        $tpl_page .= '<div style="padding: 5px;">'.$line['news'].'</div></div><br/>';
+                                        if($line['comments'] == '') {
+                                                $tpl_page .= 'No comments<br/>';
+                                        }
+                                        else {
+                                                $comment = explode(":", $line['comments']);
+                                                foreach($comment as $comment2) {
+                                                        if($comment2 != '') {
+                                                                $comment3 = explode("|", $comment2);
+                                                                $tpl_page .= '<div style="border: 1px solid #999;"><div style="background-color: #F0F0F0; padding: 4px;"><strong>'.$comment3[2] . '</strong> ('.date('F j, Y, g:i a', $comment3[3]).') [<a href="manage_page.php?action=staffconnect&commentdelete='.urlencode($comment2).'&id='.$line['id'].'">x</a>]</div><div style="padding: 4px;">' . htmlspecialchars($comment3[0]).'</div></div><br/>';
+                                                        }
+                                                }
+                                        }
+                                        $tpl_page .= '<br/><form action="?action=staffconnect&comment='.$line['id'].'" method="post"><input type="hidden" value="'.$_GET['comment'].'" name="commentid"/><textarea name="addcomment" rows="4" cols="50"></textarea><input type="submit" name="submitcomment" value="Add"/></form><br/>';
+                                }
+                        }
+                        else {
+                                $tpl_page .= 'Invalid comment ID';
+                        }
+                }
+                if(!($_GET['add']) && !($_GET['comment']) && !($_GET['commentdelete'])) {                      
+                $results = $tc_db->GetAll("SELECT HIGH_PRIORITY * FROM `" . KU_DBPREFIX . "staffconnect` ORDER BY `id` DESC");
+                        if ($results !== false && count($results) > 0) {
+                                foreach ($results as $line) {
+                                        $tpl_page .= '<div style="border: 1px solid #888"><div style="padding: 5px;background:#E0E0E0;"><b>'.$line['subject'].'</b> | '.date('F j, Y, g:i a', $line['postedat']).'';
+                                        $tpl_page .= ' by '.$line['name'].' ';
+                                        if($line['name'] == $_SESSION['manageusername']){
+                                            $tpl_page .= '[<a href="manage_page.php?action=staffconnect&delete='.$line['id'].'">x</a>]</div>';
+                                        }
+                                        $tpl_page .= '<div style="padding: 5px;">'.$line['news'].'</div></div>';
+                                        $comment = explode(":", $line['comments']);
+                                        $i = 0;
+                                        foreach($comment as $comment2) {
+                                                if($comment2 != '') {
+                                                        $i++;
+                                                }
+                                        }
+                                        if($i == 0) {
+                                                $tpl_page .=  '<div align="right" style="padding: 3px"><a href="manage_page.php?action=staffconnect&comment='.$line['id'].'" style="color: grey">No comments</a></div><br/><br/>';
+                                        }
+                                    else {
+                                                $tpl_page .=  '<div align="right" style="padding: 3px"><a href="manage_page.php?action=staffconnect&comment='.$line['id'].'">Comments ('.$i.')</a></div><br/><br/>';
+                                        }                              
+                                }
+                        } else {
+                                $tpl_page .= 'No news feed.';
+                        }
+                        if($this->CurrentUserIsAdministrator()) {
+                                $tpl_page .= '<p style="text-align: right">[<a href="manage_page.php?action=staffconnect&add=1">Add item</a>]</p>';
+                        }
+                }
+        }
+
 ?>

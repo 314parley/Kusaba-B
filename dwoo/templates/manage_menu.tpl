@@ -26,6 +26,9 @@ function toggle(button, area) {
 </head>
 <body>
 <h1>{t}Manage Boards{/t}</h1>
+<br>
+<ul>
+</ul>
 <ul>
 	{$links}
 </ul>
