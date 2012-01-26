@@ -61,9 +61,9 @@ if (!$cache_loaded) {
 							// PostgreSQL is also supported. Supported values are postgres64, postgres7 and postgres8. Only postgres8 is tested.
 							// SQLite is also supported. Set to sqlite to use. SQLite will not use any database software, only a single file.
 		$cf['KU_DBHOST']          = 'localhost'; // Database hostname. On SQLite this has no effect.
-		$cf['KU_DBDATABASE']      = 'CHANGEME'; // Database... database. On SQLite this will be the path to your database file. Secure this file.
-		$cf['KU_DBUSERNAME']      = 'CHANGEME'; // Database username. On SQLite this has no effect.
-		$cf['KU_DBPASSWORD']      = 'CHANGEME'; // Database password. On SQLite this has no effect.
+		$cf['KU_DBDATABASE']      = 'kub'; // Database... database. On SQLite this will be the path to your database file. Secure this file.
+		$cf['KU_DBUSERNAME']      = 'root'; // Database username. On SQLite this has no effect.
+		$cf['KU_DBPASSWORD']      = 'root'; // Database password. On SQLite this has no effect.
 		$cf['KU_DBPREFIX']        = ''; // Database table prefix
 		$cf['KU_DBUSEPERSISTENT'] = false; // Use persistent connection to database
 
@@ -73,13 +73,17 @@ if (!$cache_loaded) {
 		$cf['KU_HEADERURL'] = ''; // Full URL to the header image (or rotation script) to be displayed, can be left blank for no image
 		$cf['KU_IRC']       = ''; // IRC info, which will be displayed in the menu.  Leave blank to remove it
 		$cf['KU_BANREASON']	= ''; // This is the default ban reason that will automatically fill in the ban reason box
+	// Root 
+		// For the love of god change this 
+		$cf['KU_ROOT'] = 'parley'; //Can do SQL injections and can not be modified, suspended, or deleted / can clear the modlog. Make this your administrator account
+
 
 	// Paths and URLs
 		// Main installation directory
 			$cf['KU_ROOTDIR']   = realpath(dirname(__FILE__))."/"; // Full system path of the folder containing kusaba.php, with trailing slash. The default value set here should be OK.. If you need to change it, you should already know what the full path is anyway.
-			$cf['KU_WEBFOLDER'] = 'CHANGEME'; // The path from the domain of the board to the folder which kusaba is in, including the trailing slash.  Example: "http://www.yoursite.com/misc/kusaba/" would have a $cf['KU_WEBFOLDER'] of "/misc/kusaba/"
-			$cf['KU_WEBPATH']   = 'CHANGEME'; // The path to the index folder of kusaba, without trailing slash. Example: http://www.yoursite.com
-			$cf['KU_DOMAIN']    = 'CHANGEME'; // Used in cookies for the domain parameter.  Should be a period and then the top level domain, which will allow the cookies to be set for all subdomains.  For http://www.randomchan.org, the domain would be .randomchan.org; http://zachchan.freehost.com would be zach.freehost.com
+			$cf['KU_WEBFOLDER'] = '/'; // The path from the domain of the board to the folder which kusaba is in, including the trailing slash.  Example: "http://www.yoursite.com/misc/kusaba/" would have a $cf['KU_WEBFOLDER'] of "/misc/kusaba/"
+			$cf['KU_WEBPATH']   = 'http://mbbs:8888'; // The path to the index folder of kusaba, without trailing slash. Example: http://www.yoursite.com
+			$cf['KU_DOMAIN']    = ''; // Used in cookies for the domain parameter.  Should be a period and then the top level domain, which will allow the cookies to be set for all subdomains.  For http://www.randomchan.org, the domain would be .randomchan.org; http://zachchan.freehost.com would be zach.freehost.com
 
 		// Board subdomain/alternate directory (optional, change to enable)
 			// DO NOT CHANGE THESE IF YOU DO NOT KNOW WHAT YOU ARE DOING!!
@@ -150,7 +154,7 @@ if (!$cache_loaded) {
 
 	// Pages
 		$cf['KU_FIRSTPAGE'] = 'board.html'; // Filename of the first page of a board.  Only change this if you are willing to maintain the .htaccess files for each board directory (they are created with a DirectoryIndex board.html, change them if you change this)
-		$cf['KU_DIRTITLE']  = false; // Whether or not to place the board directory in the board's title and at the top of the page.  true would render as "/b/ - Random", false would render as "Random"
+		$cf['KU_DIRTITLE']  = true; // Whether or not to place the board directory in the board's title and at the top of the page.  true would render as "/b/ - Random", false would render as "Random"
 
 	// File tagging
 		$cf['KU_TAGS'] = array('Japanese' => 'J',
